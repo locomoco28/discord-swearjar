@@ -15,7 +15,7 @@ parentPort.once('message', (config) => {
   const knex = require('knex')({
     client: 'mysql',
     connection: DATABASE.URI,
-    debug: true,
+    debug: DATABASE.DEBUG || false,
   })
 
   parentPort.on('message', (rawData) => {

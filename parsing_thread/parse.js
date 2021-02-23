@@ -20,7 +20,7 @@ const swearJarCategories = [
 parentPort.on('message', (rawData) => {
   const data = JSON.parse(rawData)
 
-  const msgInappropiate = swearJar.profane(data.content)
+  const msgInappropiate = swearJar.profane(data.content.split('_').join(' '))
   if (!msgInappropiate) return
 
   const rawCategories = swearJar.scorecard(data.content)

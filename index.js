@@ -22,11 +22,12 @@ client.once('ready', () => {
 client.on('error', console.error)
 
 client.on('message', (message) => {
-  const { content, channel, id } = message
+  const { content, channel, id, cleanContent } = message
 
   parseWorker.postMessage(
     JSON.stringify({
       content,
+      cleanContent,
       ...{
         channel_id: channel.id,
         message_id: id,
@@ -44,7 +45,7 @@ client.on('message', (message) => {
 })
 
 client.on('messageUpdate', (oldMessage, newMessage) => {
-  const { content, channel, id, guild } = newMessage
+  const { content, channel, id } = newMessage
 
   parseWorker.postMessage(
     JSON.stringify({
@@ -54,25 +55,27 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
         message_id: id,
         isEdit: true,
         type: channel.type,
-        server_id: guild.id,
+        server_id:
+          channel.type == 'dm'
+            ? 'DM'
+            : 'guild' in newMessage
+            ? newMessage.guild.id
+            : 'UNKNOWN CHANNEL',
       },
     })
   )
 })
 
 parseWorker.on('message', (data) => {
-  const {
-    content,
-    type,
-    categories,
-    channel_id,
-    message_id,
-    isEdit,
-    server_id,
-  } = JSON.parse(data)
+  const { categories, channel_id, message_id, isEdit, server_id } = JSON.parse(
+    data
+  )
 
   client.channels.fetch(channel_id).then((ch) => {
+    const type = ch.type
+
     ch.messages.fetch(message_id).then((msg) => {
+      const { content } = msg
       dbWorker.postMessage(
         JSON.stringify({
           author_tag: msg.author.tag,

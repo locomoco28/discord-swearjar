@@ -1,0 +1,19 @@
+{
+  "name": "discord-swearjar",
+  "version": "1.0.0",
+  "description": "Swear jar bot for discord",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "repository": "https://github.com/locomoco28/discord-swearjar.git",
+  "author": "Eren Karahasan<locomoco.dev@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "knex": "^0.21.18",
+    "mysql": "^2.18.1",
+    "swearjar": "^0.2.0"
+  }
+}

@@ -9,6 +9,9 @@ if (isMainThread) {
 console.log('Message parser thread running')
 
 const swearJar = require('swearjar')
+const path = require('path')
+swearJar.loadBadWords('swearfile.json')
+/*
 const swearJarCategories = [
   'blasphemy',
   'discriminatory',
@@ -16,6 +19,7 @@ const swearJarCategories = [
   'insult',
   'sexual',
 ]
+*/
 
 parentPort.on('message', (rawData) => {
   const data = JSON.parse(rawData)
